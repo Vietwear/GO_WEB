@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{partial "head.html"}}
+  {{ $css := resources.Get "css/common.css" }}
+  {{ $style := $css | resources.Fingerprint }}
+
+  <link
+    rel="stylesheet"
+    href="{{ $style.RelPermalink }}"
+  />
+</head>
+<body class="container-fluid">
+  {{partial "nav.html"}}
+  <div class="row">
+    <div class="container">
+      <div>
+        <h1 class="page-title">
+          All Screencasts
+          <small>Newest on top</small>
+        </h1>
+      </div>
+
+      <div>
+        <p>
+          <a
+            class="btn btn-success btn-lg btn-inline"
+            data-toggle="tooltip"
+            title="Get periodic emails with new screencasts and valuable content, right in your inbox."
+            href="/subscribe"
+          >
+            Get These in your Inbox
+          </a>
+        </p>
+      </div>
+
+      <hr />
+
+      {{range $p := (where .Site.RegularPages "Type" "screencast")}}
+      <div class="row media">
+        <div class="date col-sm-1">
+          {{dateFormat "Monday, Jan 2, 2006" $p.Date}}
+        </div>
+        <div class="col-sm-10">
+          <h2>
+            <a class="screencast-title" href="{{$p.RelPermalink}}">
+              {{$p.Title}}
+            </a>
+          </h2>
+          <p>
+            {{$p.Summary}}
+          </p>
+          <div>
+            <a class="btn btn-info" href="{{$p.RelPermalink}}">View Video</a>
+          </div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+  <div class="row text-center footer">
+    {{partial "footer.html"}}
+  </div>
+  {{partial "js.html"}}
+</body>
+</html>
